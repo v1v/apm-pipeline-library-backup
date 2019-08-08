@@ -49,6 +49,7 @@ def call(Map params = [:]) {
     catchError {
       withEnv(["HOME=${env.WORKSPACE}/${env.BASE_DIR ?: ''}"]) {
         sh(label: 'Check Licenses', script: """
+        env | sort
         go get -u github.com/elastic/go-licenser
         go-licenser ${skipFlag} ${excludeFlag} ${fileExtFlag} ${licenseFlag} ${licensorFlag} | tee ${testOutput}""")
       }
