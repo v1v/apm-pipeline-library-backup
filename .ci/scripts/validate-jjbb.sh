@@ -19,11 +19,14 @@ docker run -t --rm --user "$(id -u):$(id -g)" \
 
 echo 'Validate JJB'
 JJB_REPORT="${TMPFOLDER}/jjb.out"
+IMAGE="widerplan/jenkins-job-builder"
+docker pull --quiet "${IMAGE}"
+
 set +e
 docker run -t --rm --user "$(id -u):$(id -g)" \
         -v "${TMPFOLDER}:/jjbb" \
         -e HOME=/tmp \
-        widerplan/jenkins-job-builder -l error test /jjbb > "${JJB_REPORT}"
+        "${IMAGE}" -l error test /jjbb > "${JJB_REPORT}"
 
 # shellcheck disable=SC2181
 if [ $? -gt 0 ] ; then
